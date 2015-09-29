@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-
-import static java.awt.geom.Arc2D.PIE;
+import java.awt.geom.Rectangle2D;
 
 public class Index {
 	public static void main(String[] args) {
@@ -25,14 +23,17 @@ class YinYang extends JPanel {
 	static {
 		Area topCircle = new Area(new Ellipse2D.Float(100, 0, 200, 200));
 		Area bottomCircle = new Area(new Ellipse2D.Float(100, 200, 200, 200));
-		Shape leftSemi = new Arc2D.Double(0, 0, 400, 400, 90, 180, PIE);
-		Shape rightSemi = new Arc2D.Double(0, 0, 400, 400, 90, -180, PIE);
+		Area leftRect = new Area(new Rectangle2D.Float(0, 0, 200, 400));
+		Area rightRect = new Area(new Rectangle2D.Float(200, 0, 200, 400));
+		Area silhouette = new Area(new Ellipse2D.Float(0, 0, 400, 400));
 
-		leftWisp = new Area(leftSemi);
+		leftWisp = new Area(leftRect);
+		leftWisp.intersect(silhouette);
 		leftWisp.add(topCircle);
 		leftWisp.subtract(bottomCircle);
 
-		rightWisp = new Area(rightSemi);
+		rightWisp = new Area(rightRect);
+		rightWisp.intersect(silhouette);
 		rightWisp.add(bottomCircle);
 		rightWisp.subtract(topCircle);
 	}
